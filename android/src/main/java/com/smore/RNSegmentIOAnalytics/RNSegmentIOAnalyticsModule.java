@@ -48,6 +48,8 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
       }
 
       mAnalytics = builder.build();
+      // Set the initialized instance as a globally accessible instance.
+      Analytics.setSingletonInstance(mAnalytics);
     } else {
       log("Segment Analytics already initialized. Refusing to re-initialize.");
     }
@@ -161,7 +163,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
           props.putValue(key, map.getBoolean(key));
           break;
         case Map:
-          props.putValue(key, map.getMap(key));
+          props.putValue(key, toProperties(map.getMap(key)));
           break;
         case Null:
           props.putValue(key, null);
@@ -198,7 +200,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
           traits.putValue(key, map.getBoolean(key));
           break;
         case Map:
-          traits.putValue(key, map.getMap(key));
+          traits.putValue(key, toProperties(map.getMap(key)));
           break;
         case Null:
           traits.putValue(key, null);
