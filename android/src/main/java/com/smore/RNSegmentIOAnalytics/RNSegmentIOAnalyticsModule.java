@@ -47,7 +47,9 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
         builder.logLevel(Analytics.LogLevel.DEBUG);
       }
 
-      mAnalytics = builder.build();
+      mAnalytics = builder
+        .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
+        .build();
       // Set the initialized instance as a globally accessible instance.
       Analytics.setSingletonInstance(mAnalytics);
     } else {
