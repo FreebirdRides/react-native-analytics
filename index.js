@@ -66,7 +66,7 @@ export default {
      * https://segment.com/docs/libraries/android/#screen
      */
   screen: function(screenName: string, properties: ?Object, options: ?Object) {
-    ativeRNSegmentIOAnalytics.screen(
+    NativeRNSegmentIOAnalytics.screen(
       screenName,
       properties || {},
       options || {}
