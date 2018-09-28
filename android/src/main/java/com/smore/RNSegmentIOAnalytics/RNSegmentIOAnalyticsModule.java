@@ -230,34 +230,9 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
       return options;
     }
 
-    ReadableMapKeySetIterator iterator = map.keySetIterator();
-    while (iterator.hasNextKey()) {
-      String key = iterator.nextKey();
-      ReadableType type = map.getType(key);
-      switch (type) {
-      case Array:
-        options.putValue(key, map.getArray(key));
-        break;
-      case Boolean:
-        options.putValue(key, map.getBoolean(key));
-        break;
-      case Map:
-        options.putValue(key, toProperties(map.getMap(key)));
-        break;
-      case Null:
-        options.putValue(key, null);
-        break;
-      case Number:
-        options.putValue(key, map.getDouble(key));
-        break;
-      case String:
-        options.putValue(key, map.getString(key));
-        break;
-      default:
-        log("Unknown type:" + type.name());
-        break;
-      }
-    }
+    options.setIntegration("AppsFlyer", true);
+    options.setIntegrationOptions("AppsFlyer", toProperties(map));
+
     return options;
   }
 }
