@@ -64,11 +64,11 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
    https://segment.com/docs/libraries/android/#identify
    */
   @ReactMethod
-  public void identify(String userId, ReadableMap traits) {
+  public void identify(String userId, ReadableMap traits, ReadableMap options) {
     if (!mEnabled) {
       return;
     }
-    mAnalytics.identify(userId, toTraits(traits), toOptions(null));
+    mAnalytics.identify(userId, toTraits(traits), toOptions(options));
   }
 
   /*
@@ -86,22 +86,22 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
    https://segment.com/docs/libraries/android/#track
    */
   @ReactMethod
-  public void track(String trackText, ReadableMap properties) {
+  public void track(String trackText, ReadableMap properties, ReadableMap options) {
     if (!mEnabled) {
       return;
     }
-    mAnalytics.track(trackText, toProperties(properties));
+    mAnalytics.track(trackText, toProperties(properties), toOptions(options));
   }
 
   /*
    https://segment.com/docs/libraries/android/#screen
    */
   @ReactMethod
-  public void screen(String screenName, ReadableMap properties) {
+  public void screen(String screenName, ReadableMap properties, ReadableMap options) {
     if (!mEnabled) {
       return;
     }
-    mAnalytics.screen(null, screenName, toProperties(properties));
+    mAnalytics.screen(null, screenName, toProperties(properties), toOptions(options));
   }
 
   /*
@@ -225,6 +225,39 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   }
 
   private Options toOptions (ReadableMap map) {
-    return new Options();
+    Options options = new Options();
+    if (map == null) {
+      return options;
+    }
+
+    ReadableMapKeySetIterator iterator = map.keySetIterator();
+    while (iterator.hasNextKey()) {
+      String key = iterator.nextKey();
+      ReadableType type = map.getType(key);
+      switch (type) {
+      case Array:
+        options.putValue(key, map.getArray(key));
+        break;
+      case Boolean:
+        options.putValue(key, map.getBoolean(key));
+        break;
+      case Map:
+        options.putValue(key, toProperties(map.getMap(key)));
+        break;
+      case Null:
+        options.putValue(key, null);
+        break;
+      case Number:
+        options.putValue(key, map.getDouble(key));
+        break;
+      case String:
+        options.putValue(key, map.getString(key));
+        break;
+      default:
+        log("Unknown type:" + type.name());
+        break;
+      }
+    }
+    return options;
   }
 }
