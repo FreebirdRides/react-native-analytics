@@ -15,6 +15,8 @@ import com.segment.analytics.Options;
 import android.util.Log;
 import android.content.Context;
 
+import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
+
 public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   private static Analytics mAnalytics = null;
   private Boolean mEnabled = true;
@@ -49,6 +51,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
 
       mAnalytics = builder
         .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
+        .use(AppsflyerIntegration.FACTORY) // https://github.com/AppsFlyerSDK/AppsFlyer-Segment-Integration#android
         .build();
       // Set the initialized instance as a globally accessible instance.
       Analytics.setSingletonInstance(mAnalytics);
