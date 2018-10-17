@@ -11,6 +11,11 @@
 #import <Analytics/SEGAnalytics.h>
 #import "RNSegmentIOAnalytics.h"
 
+#import "AppboyKit.h"
+#import "IDFADelegate.h"
+#import "SEGAppboyIntegrationFactory.h"
+#import "SEGAppsFlyerIntegrationFactory.h"
+
 @implementation RNSegmentIOAnalytics
 
 RCT_EXPORT_MODULE()
@@ -20,6 +25,21 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
     configuration.flushAt = flushAt;
     configuration.shouldUseLocationServices = shouldUseLocationServices;
+    configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
+    configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
+//    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
+    [configuration use:[SEGAppboyIntegrationFactory instance]];
+    [configuration use:[SEGAppsFlyerIntegrationFactory instance]];
+    configuration.enableAdvertisingTracking = YES;       //OPTIONAL
+    configuration.trackApplicationLifecycleEvents = YES; //OPTIONAL
+    configuration.trackDeepLinks = YES;                  //OPTIONAL
+    configuration.trackPushNotifications = YES;          //OPTIONAL
+    configuration.trackAttributionData = YES;            //OPTIONAL
+    #if DEBUG
+    [SEGAnalytics debug:YES];
+    #else
+    [SEGAnalytics debug:NO];
+    #endif
     [SEGAnalytics setupWithConfiguration:configuration];
 }
 
