@@ -10,8 +10,6 @@
 		C69324552177E05900C349A2 /* SEGAppsFlyerIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324412177E05900C349A2 /* SEGAppsFlyerIntegration.m */; };
 		C69324562177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324422177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.m */; };
 		C69324572177E05900C349A2 /* IDFADelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324472177E05900C349A2 /* IDFADelegate.m */; };
-		C69324582177E05900C349A2 /* AppboyReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C693244A2177E05900C349A2 /* AppboyReactBridge.m */; };
-		C69324592177E05900C349A2 /* AppboyReactUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C693244B2177E05900C349A2 /* AppboyReactUtils.m */; };
 		C693245A2177E05900C349A2 /* SEGAppboyIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C693244F2177E05900C349A2 /* SEGAppboyIntegrationFactory.m */; };
 		C693245B2177E05900C349A2 /* SEGAppboyIntegrationEndpointDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324502177E05900C349A2 /* SEGAppboyIntegrationEndpointDelegate.m */; };
 		C693245C2177E05900C349A2 /* SEGAppboyIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324512177E05900C349A2 /* SEGAppboyIntegration.m */; };
@@ -39,11 +37,6 @@
 		C69324452177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGAppsFlyerIntegrationFactory.h; sourceTree = "<group>"; };
 		C69324462177E05900C349A2 /* IDFADelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDFADelegate.h; sourceTree = "<group>"; };
 		C69324472177E05900C349A2 /* IDFADelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDFADelegate.m; sourceTree = "<group>"; };
-		C69324492177E05900C349A2 /* AppboyReactUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppboyReactUtils.h; sourceTree = "<group>"; };
-		C693244A2177E05900C349A2 /* AppboyReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppboyReactBridge.m; sourceTree = "<group>"; };
-		C693244B2177E05900C349A2 /* AppboyReactUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppboyReactUtils.m; sourceTree = "<group>"; };
-		C693244C2177E05900C349A2 /* AppboyReactBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppboyReactBridge.h; sourceTree = "<group>"; };
-		C693244D2177E05900C349A2 /* Appboy.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Appboy.bundle; sourceTree = "<group>"; };
 		C693244F2177E05900C349A2 /* SEGAppboyIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAppboyIntegrationFactory.m; sourceTree = "<group>"; };
 		C69324502177E05900C349A2 /* SEGAppboyIntegrationEndpointDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAppboyIntegrationEndpointDelegate.m; sourceTree = "<group>"; };
 		C69324512177E05900C349A2 /* SEGAppboyIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAppboyIntegration.m; sourceTree = "<group>"; };
@@ -93,18 +86,6 @@
 			path = AppsFlyer;
 			sourceTree = "<group>";
 		};
-		C69324482177E05900C349A2 /* AppboyReactBridge */ = {
-			isa = PBXGroup;
-			children = (
-				C69324492177E05900C349A2 /* AppboyReactUtils.h */,
-				C693244A2177E05900C349A2 /* AppboyReactBridge.m */,
-				C693244B2177E05900C349A2 /* AppboyReactUtils.m */,
-				C693244C2177E05900C349A2 /* AppboyReactBridge.h */,
-				C693244D2177E05900C349A2 /* Appboy.bundle */,
-			);
-			path = AppboyReactBridge;
-			sourceTree = "<group>";
-		};
 		C693244E2177E05900C349A2 /* Braze */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,7 +102,6 @@
 		EA880B8F1D04119B00FA807F /* RNAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				C69324482177E05900C349A2 /* AppboyReactBridge */,
 				C69324402177E05900C349A2 /* AppsFlyer */,
 				C693244E2177E05900C349A2 /* Braze */,
 				C69324462177E05900C349A2 /* IDFADelegate.h */,
@@ -190,12 +170,10 @@
 			files = (
 				C693245A2177E05900C349A2 /* SEGAppboyIntegrationFactory.m in Sources */,
 				C69324572177E05900C349A2 /* IDFADelegate.m in Sources */,
-				C69324582177E05900C349A2 /* AppboyReactBridge.m in Sources */,
 				C693245C2177E05900C349A2 /* SEGAppboyIntegration.m in Sources */,
 				C693245B2177E05900C349A2 /* SEGAppboyIntegrationEndpointDelegate.m in Sources */,
 				EA880B921D04119B00FA807F /* RNSegmentIOAnalytics.m in Sources */,
 				C69324562177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.m in Sources */,
-				C69324592177E05900C349A2 /* AppboyReactUtils.m in Sources */,
 				C69324552177E05900C349A2 /* SEGAppsFlyerIntegration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
