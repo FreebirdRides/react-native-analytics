@@ -23,18 +23,18 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldUseLocationServices)
 {
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
-    configuration.flushAt = flushAt;
-    configuration.shouldUseLocationServices = shouldUseLocationServices;
-    configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
-    configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
 //    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
+    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:nil];
     [configuration use:[SEGAppboyIntegrationFactory instance]];
     [configuration use:[SEGAppsFlyerIntegrationFactory instance]];
     configuration.enableAdvertisingTracking = YES;       //OPTIONAL
+    configuration.flushAt = flushAt;
+    configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
     configuration.trackApplicationLifecycleEvents = YES; //OPTIONAL
     configuration.trackDeepLinks = YES;                  //OPTIONAL
     configuration.trackPushNotifications = YES;          //OPTIONAL
     configuration.trackAttributionData = YES;            //OPTIONAL
+    configuration.shouldUseLocationServices = shouldUseLocationServices;
     #if DEBUG
     [SEGAnalytics debug:YES];
     #else
