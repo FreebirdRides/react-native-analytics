@@ -17,6 +17,7 @@ declare module 'react-native-analytics' {
     static debug(isEnabled: boolean): void
     static enable(): void
     static disable(): void
+    static appsFlyerId(): Promise<string | null>
   }
 }
 

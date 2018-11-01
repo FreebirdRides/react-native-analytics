@@ -105,4 +105,13 @@ RCT_EXPORT_METHOD(enable) {
     [[SEGAnalytics sharedAnalytics] enable];
 }
 
+RCT_REMAP_METHOD(appsFlyerId,
+                 appsFlyerIdWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+  [SEGAppsFlyerIntegrationFactory instance] appsfl
+  NSString *appsflyerId = [[SEGAnalytics sharedAnalytics].appsflyer.getAppsFLyerUID;
+  resolve(appsflyerId);
+}
+
 @end

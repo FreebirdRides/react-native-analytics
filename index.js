@@ -111,5 +111,9 @@ export default {
      */
   enable: function() {
     NativeRNSegmentIOAnalytics.enable()
+  },
+
+  appsFlyerId: function() {
+    return NativeRNSegmentIOAnalytics.appsFlyerId()
   }
 }

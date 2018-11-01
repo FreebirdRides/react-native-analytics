@@ -1,5 +1,6 @@
 package com.smore.RNSegmentIOAnalytics;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -150,6 +151,13 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void enable() {
     mEnabled = true;
+  }
+
+  @ReactMethod
+  public String appsFlyerId(Promise promise) {
+    // String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(this);
+    String appsFlyerId = mAnalytics.appsflyer.getAppsFlyerUID(this);
+    promise.resolve(appsFlyerId);
   }
 
   private Properties toProperties (ReadableMap map) {
