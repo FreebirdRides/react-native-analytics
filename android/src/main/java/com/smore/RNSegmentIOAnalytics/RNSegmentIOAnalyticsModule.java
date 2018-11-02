@@ -16,6 +16,9 @@ import com.segment.analytics.Options;
 import android.util.Log;
 import android.content.Context;
 
+import com.appsflyer.AppsFlyerLib;
+import com.appsflyer.AppsFlyerConversionListener;
+
 import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
 import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
 
@@ -50,6 +53,16 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
       if (mDebug) {
         builder.logLevel(Analytics.LogLevel.DEBUG);
       }
+
+      AppsflyerIntegration.cld = new AppsflyerIntegration.ConversionListenerDisplay() {
+        @Override
+        public void display(Map<String, String> attributionData) {
+          for (String attrName : attributionData.keySet()) {
+                  Log.d(TAG, "attribute: " + attrName + " = " +
+                          attributionData.get(attrName));
+          }
+        }
+      };
 
       mAnalytics = builder
         .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
@@ -155,8 +168,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public String appsFlyerId(Promise promise) {
-    // String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(this);
-    String appsFlyerId = mAnalytics.appsflyer.getAppsFlyerUID(this);
+    String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(this);
     promise.resolve(appsFlyerId);
   }
 

@@ -16,6 +16,8 @@
 #import "SEGAppboyIntegrationFactory.h"
 #import "SEGAppsFlyerIntegrationFactory.h"
 
+@import AppsFlyerTracker;
+
 @implementation RNSegmentIOAnalytics
 
 RCT_EXPORT_MODULE()
@@ -26,7 +28,8 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
 //    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
     [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:nil];
     [configuration use:[SEGAppboyIntegrationFactory instance]];
-    [configuration use:[SEGAppsFlyerIntegrationFactory instance]];
+    // [configuration use:[SEGAppsFlyerIntegrationFactory instance]];
+    [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
     configuration.enableAdvertisingTracking = YES;       //OPTIONAL
     configuration.flushAt = flushAt;
     configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
@@ -109,9 +112,23 @@ RCT_REMAP_METHOD(appsFlyerId,
                  appsFlyerIdWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-  [SEGAppsFlyerIntegrationFactory instance] appsfl
-  NSString *appsflyerId = [[SEGAnalytics sharedAnalytics].appsflyer.getAppsFLyerUID;
+  NSString *appsflyerId = [[AppsFlyerTracker sharedTracker] getAppsFLyerUID];
   resolve(appsflyerId);
+}
+
+-(void)onConversionDataReceived:(NSDictionary*) installData {
+    id status = [installData objectForKey:@"af_status"];
+    if ([status isEqualToString:@"Non-organic"]) {
+        id sourceID = [installData objectForKey:@"media_source"];
+        id campaign = [installData objectForKey:@"campaign"];
+        NSLog(@"This is a none organic install. Media source: %@  Campaign: %@",sourceID,campaign);
+    } else if([status isEqualToString:@"Organic"]) {
+        NSLog(@"This is an organic install.");
+    }
+}
+
+-(void)onConversionDataRequestFailure:(NSError *) error {
+    NSLog(@"%@",error);
 }
 
 @end
