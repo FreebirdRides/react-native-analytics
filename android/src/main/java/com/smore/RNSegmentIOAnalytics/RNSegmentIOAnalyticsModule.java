@@ -167,9 +167,14 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public String appsFlyerId(Promise promise) {
-    Context context = getReactApplicationContext().getApplicationContext();
-    String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(context);
-    promise.resolve(appsFlyerId);
+    try {
+      Context context = getReactApplicationContext().getApplicationContext();
+      String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(context);
+      promise.resolve(appsFlyerId);
+    } catch (IllegalViewOperationException e) {
+      promise.reject("Segment", e);
+    }
+    return promise;
   }
 
   private Properties toProperties (ReadableMap map) {
