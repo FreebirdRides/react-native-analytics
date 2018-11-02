@@ -18,6 +18,7 @@ import android.content.Context;
 
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.AppsFlyerConversionListener;
+import java.lang.Exception;
 import java.util.Map;
 import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
 import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
@@ -166,15 +167,14 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public String appsFlyerId(Promise promise) {
+  public void appsFlyerId(Promise promise) {
     try {
       Context context = getReactApplicationContext().getApplicationContext();
       String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(context);
       promise.resolve(appsFlyerId);
-    } catch (IllegalViewOperationException e) {
+    } catch (Exception e) {
       promise.reject("Segment", e);
     }
-    return promise;
   }
 
   private Properties toProperties (ReadableMap map) {
