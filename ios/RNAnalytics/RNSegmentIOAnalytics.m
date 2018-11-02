@@ -25,10 +25,8 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldUseLocationServices)
 {
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
-//    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
     [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:nil];
     [configuration use:[SEGAppboyIntegrationFactory instance]];
-    // [configuration use:[SEGAppsFlyerIntegrationFactory instance]];
     [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
     configuration.enableAdvertisingTracking = YES;       //OPTIONAL
     configuration.flushAt = flushAt;
@@ -112,7 +110,7 @@ RCT_REMAP_METHOD(appsFlyerId,
                  appsFlyerIdWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSString *appsflyerId = [[AppsFlyerTracker sharedTracker] getAppsFLyerUID];
+  NSString *appsflyerId = [[AppsFlyerTracker sharedTracker] getAppsFlyerUID];
   resolve(appsflyerId);
 }
 
