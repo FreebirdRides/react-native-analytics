@@ -58,8 +58,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
         @Override
         public void display(Map<String, String> attributionData) {
           for (String attrName : attributionData.keySet()) {
-                  Log.d(TAG, "attribute: " + attrName + " = " +
-                          attributionData.get(attrName));
+            log("attribute: " + attrName + " = " + attributionData.get(attrName));
           }
         }
       };
