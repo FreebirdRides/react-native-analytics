@@ -18,7 +18,7 @@ import android.content.Context;
 
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.AppsFlyerConversionListener;
-
+import java.util.Map;
 import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
 import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
 
