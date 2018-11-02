@@ -168,7 +168,8 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public String appsFlyerId(Promise promise) {
-    String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(this);
+    Context context = getReactApplicationContext().getApplicationContext();
+    String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(context);
     promise.resolve(appsFlyerId);
   }
 
