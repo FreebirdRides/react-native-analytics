@@ -7,7 +7,11 @@
 
 #import <React/RCTBridgeModule.h>
 
-#import "SEGAppsFlyerTrackerDelegate"
+#import "AppboyKit.h"
+#import "IDFADelegate.h"
+#import "SEGAppboyIntegrationFactory.h"
+#import "SEGAppsFlyerIntegrationFactory.h"
+
 /*
  * React native wrapper of the Segment.com's Analytics iOS SDK
  */

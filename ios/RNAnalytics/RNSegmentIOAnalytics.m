@@ -11,11 +11,6 @@
 #import <Analytics/SEGAnalytics.h>
 #import "RNSegmentIOAnalytics.h"
 
-#import "AppboyKit.h"
-#import "IDFADelegate.h"
-#import "SEGAppboyIntegrationFactory.h"
-#import "SEGAppsFlyerIntegrationFactory.h"
-
 @import AppsFlyerTracker;
 
 @implementation RNSegmentIOAnalytics
