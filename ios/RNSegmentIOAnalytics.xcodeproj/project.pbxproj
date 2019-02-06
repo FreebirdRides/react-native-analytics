@@ -259,7 +259,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"../../../ios/Frameworks/Segment-3.6.9",
+					"../../../ios/Frameworks/Segment",
 					"../../../ios/Frameworks/Appboy-3.8.1",
 					"../../../ios/Frameworks/AppsFlyer-4.8.9",
 				);
@@ -277,7 +277,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"../../../ios/Frameworks/Segment-3.6.9",
+					"../../../ios/Frameworks/Segment",
 					"../../../ios/Frameworks/Appboy-3.8.1",
 					"../../../ios/Frameworks/AppsFlyer-4.8.9",
 				);
