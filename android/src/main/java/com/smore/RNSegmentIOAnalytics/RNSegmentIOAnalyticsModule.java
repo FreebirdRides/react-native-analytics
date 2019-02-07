@@ -65,9 +65,10 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
       };
 
       mAnalytics = builder
-        .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
         .use(AppsflyerIntegration.FACTORY) // https://github.com/AppsFlyerSDK/AppsFlyer-Segment-Integration#android
         .use(AppboyIntegration.FACTORY) // https://github.com/Appboy/appboy-segment-android
+        .trackAttributionInformation() // Install Attributed event
+        .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
         .build();
       // Set the initialized instance as a globally accessible instance.
       Analytics.setSingletonInstance(mAnalytics);

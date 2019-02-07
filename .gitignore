@@ -5,3 +5,7 @@ RNSegmentIOAnalytics.xcodeproj/xcuserdata
 node_modules/
 
 ios/Pods/
+/android/.gradle
+/android/.project
+/android/.settings
+/ios/RNSegmentIOAnalytics.xcodeproj/project.xcworkspace/xcuserdata/lunchmeat.xcuserdatad/UserInterfaceState.xcuserstate
