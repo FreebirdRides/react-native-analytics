@@ -50,6 +50,8 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
                                                withObject:_bridge.launchOptions];
         }
     }
+
+    [AppsFlyerTracker sharedTracker].delegate = self;
 }
 
 /*
@@ -131,10 +133,78 @@ RCT_REMAP_METHOD(appsFlyerId,
     } else if([status isEqualToString:@"Organic"]) {
         NSLog(@"This is an organic install.");
     }
+
+    NSDictionary* message = @{
+                              @"status": @"success",
+                              @"type": @"onInstallConversionDataLoaded",
+                              @"data": installData
+                              };
+    [self performSelectorOnMainThread:@selector(handleCallback:) withObject:message waitUntilDone:NO];
 }
 
--(void)onConversionDataRequestFailure:(NSError *) error {
-    NSLog(@"%@",error);
+-(void)onConversionDataRequestFailure:(NSError *) _errorMessage {
+    NSLog(@"%@",_errorMessage);
+    NSDictionary* errorMessage = @{
+                                   @"status": @"failure",
+                                   @"type": @"onInstallConversionFailure",
+                                   @"data": _errorMessage.localizedDescription
+                                   };
+    
+    [self performSelectorOnMainThread:@selector(handleCallback:) withObject:errorMessage waitUntilDone:NO];
+}
+
+- (void) onAppOpenAttribution:(NSDictionary*) attributionData {
+    NSDictionary* message = @{
+                                @"status": @"success",
+                                @"type": @"onAppOpenAttribution",
+                                @"data": attributionData
+                            };
+    
+    [self performSelectorOnMainThread:@selector(handleCallback:) withObject:message waitUntilDone:NO];
+}
+
+- (void) onAppOpenAttributionFailure:(NSError *)_errorMessage {
+    NSDictionary* errorMessage = @{
+                                   @"status": @"failure",
+                                   @"type": @"onAttributionFailure",
+                                   @"data": _errorMessage.localizedDescription
+                                 };
+
+    [self performSelectorOnMainThread:@selector(handleCallback:) withObject:errorMessage waitUntilDone:NO];
+}
+
+-(void) handleCallback:(NSDictionary *) message {
+    NSError *error;
+    
+    if ([NSJSONSerialization isValidJSONObject:message]) {
+        NSData *jsonMessage = [NSJSONSerialization dataWithJSONObject:message
+                                                              options:0
+                                                                error:&error];
+        if (jsonMessage) {
+            NSString *jsonMessageStr = [[NSString alloc] initWithBytes:[jsonMessage bytes] length:[jsonMessage length] encoding:NSUTF8StringEncoding];
+            NSString* status = (NSString*)[message objectForKey: @"status"];
+            
+            if ([status isEqualToString:@"success"]) {
+                [self reportOnSuccess:jsonMessageStr];
+            } else {
+                [self reportOnFailure:jsonMessageStr];
+            }
+            
+            NSLog(@"jsonMessageStr = %@", jsonMessageStr);
+        } else {
+            NSLog(@"%@", error);
+        }
+    } else {
+       [self reportOnFailure:@"failed to parse response"];
+    }
+}
+
+-(void) reportOnFailure:(NSString *) errorMessage {
+    [_bridge.eventDispatcher sendAppEventWithName:@"onInstallConversionData" body:errorMessage];
+}
+
+-(void) reportOnSuccess:(NSString *) data {
+    [_bridge.eventDispatcher sendAppEventWithName:@"onInstallConversionData" body:data];
 }
 
 @end
