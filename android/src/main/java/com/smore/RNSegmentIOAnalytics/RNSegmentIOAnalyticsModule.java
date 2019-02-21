@@ -2,12 +2,13 @@ package com.smore.RNSegmentIOAnalytics;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
-
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Analytics.Builder;
 import com.segment.analytics.Properties;
@@ -23,10 +24,15 @@ import java.util.Map;
 import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
 import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   private static Analytics mAnalytics = null;
   private Boolean mEnabled = true;
   private Boolean mDebug = false;
+  private ReactApplicationContext reactContext;
 
   @Override
   public String getName() {
@@ -39,6 +45,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
 
   public RNSegmentIOAnalyticsModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    this.reactContext = reactContext;
   }
 
   /*
@@ -72,9 +79,65 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
         .build();
       // Set the initialized instance as a globally accessible instance.
       Analytics.setSingletonInstance(mAnalytics);
+      registerConversionListener();
     } else {
       log("Segment Analytics already initialized. Refusing to re-initialize.");
     }
+  }
+
+  private AppsFlyerConversionListener registerConversionListener() {
+    return new AppsFlyerConversionListener() {
+
+      @Override
+      public void onAppOpenAttribution(Map<String, String> attributionData) {
+        handleSuccess("onAppOpenAttribution", attributionData);
+      }
+
+      @Override
+      public void onAttributionFailure(String errorMessage) {
+        handleError("onAttributionFailure", errorMessage);
+      }
+
+      @Override
+      public void onInstallConversionDataLoaded(Map<String, String> conversionData) {
+        handleSuccess("onInstallConversionDataLoaded", conversionData);
+      }
+
+      @Override
+      public void onInstallConversionFailure(String errorMessage) {
+        handleError("onInstallConversionFailure", errorMessage);
+      }
+
+      private void handleSuccess(String eventType, Map<String, String> data) {
+        JSONObject obj = new JSONObject();
+
+        try {
+          obj.put("status", "succes");
+          obj.put("type", eventType);
+          obj.put("data", new JSONObject(data));
+          sendEvent(reactContext, "onInstallConversionData", obj.toString());
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      }
+
+      private void handleError(String eventType, String errorMessage) {
+        JSONObject obj = new JSONObject();
+
+        try {
+          obj.put("status", "failure");
+          obj.put("type", eventType);
+          obj.put("data", errorMessage);
+          sendEvent(reactContext, "onInstallConversionData", obj.toString());
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      }
+
+      private void sendEvent(ReactContext reactContext, String eventName, Object params) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+      }
+    };
   }
 
   /*
