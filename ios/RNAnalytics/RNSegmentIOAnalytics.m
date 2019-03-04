@@ -22,6 +22,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldUseLocationServices)
 {
     @try {
+        NSLog(@"SEGAnalytics setup");
         SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
         [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:_bridge.launchOptions];
         [configuration use:[SEGAppboyIntegrationFactory instance]];
@@ -52,10 +53,10 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
         }
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        NSLog(@"SEGAnalytics setup Exception: %@", e);
     }
     @finally {
-        NSLog(@"finally");
+        NSLog(@"SEGAnalytics setup finally completed");
     }
 }
 
@@ -130,6 +131,7 @@ RCT_REMAP_METHOD(appsFlyerId,
 }
 
 -(void)onConversionDataReceived:(NSDictionary*) installData {
+    NSLog(@"onConversionDataReceived %@", installData);
     id status = [installData objectForKey:@"af_status"];
     if ([status isEqualToString:@"Non-organic"]) {
         id sourceID = [installData objectForKey:@"media_source"];
@@ -148,7 +150,7 @@ RCT_REMAP_METHOD(appsFlyerId,
 }
 
 -(void)onConversionDataRequestFailure:(NSError *) _errorMessage {
-    NSLog(@"%@",_errorMessage);
+    NSLog(@"onConversionDataRequestFailure %@",_errorMessage);
     NSDictionary* errorMessage = @{
                                    @"status": @"failure",
                                    @"type": @"onInstallConversionFailure",
@@ -159,6 +161,7 @@ RCT_REMAP_METHOD(appsFlyerId,
 }
 
 - (void) onAppOpenAttribution:(NSDictionary*) attributionData {
+    NSLog(@"onAppOpenAttribution %@", attributionData);
     NSDictionary* message = @{
                                 @"status": @"success",
                                 @"type": @"onAppOpenAttribution",
@@ -169,6 +172,7 @@ RCT_REMAP_METHOD(appsFlyerId,
 }
 
 - (void) onAppOpenAttributionFailure:(NSError *)_errorMessage {
+    NSLog(@"onAppOpenAttributionFailure %@",_errorMessage);
     NSDictionary* errorMessage = @{
                                    @"status": @"failure",
                                    @"type": @"onAttributionFailure",
