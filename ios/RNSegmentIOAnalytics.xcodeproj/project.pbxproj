@@ -261,7 +261,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"../../../ios/Frameworks/Segment",
 					"../../../ios/Frameworks/Appboy-3.8.1",
-					"../../../ios/Frameworks/AppsFlyer-4.8.9",
+					"../../../ios/Frameworks/AppsFlyer",
 				);
 				HEADER_SEARCH_PATHS = "../../../ios/Frameworks/Appboy-3.8.1/Appboy_iOS_SDK.framework/Headers";
 				OTHER_LDFLAGS = (
@@ -279,7 +279,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"../../../ios/Frameworks/Segment",
 					"../../../ios/Frameworks/Appboy-3.8.1",
-					"../../../ios/Frameworks/AppsFlyer-4.8.9",
+					"../../../ios/Frameworks/AppsFlyer",
 				);
 				HEADER_SEARCH_PATHS = "../../../ios/Frameworks/Appboy-3.8.1/Appboy_iOS_SDK.framework/Headers";
 				OTHER_LDFLAGS = (

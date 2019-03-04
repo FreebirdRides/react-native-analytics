@@ -21,37 +21,42 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldUseLocationServices)
 {
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
-    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:_bridge.launchOptions];
-    [configuration use:[SEGAppboyIntegrationFactory instance]];
-    [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
-    configuration.enableAdvertisingTracking = YES;       //OPTIONAL
-    configuration.flushAt = flushAt;
-    configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
-    configuration.trackApplicationLifecycleEvents = YES; //OPTIONAL
-    configuration.trackDeepLinks = YES;                  //OPTIONAL
-    configuration.trackPushNotifications = YES;          //OPTIONAL
-    configuration.trackAttributionData = YES;            //OPTIONAL
-    configuration.shouldUseLocationServices = shouldUseLocationServices;
-    #if DEBUG
-    [SEGAnalytics debug:YES];
-    #else
-    [SEGAnalytics debug:NO];
-    #endif
-    [SEGAnalytics setupWithConfiguration:configuration];
-
-    // On iOS we use method swizzling to intercept lifecycle events
-    // However, React-Native calls our library after applicationDidFinishLaunchingWithOptions: is called
-    // We fix this by manually calling this method at setup-time
-    if (configuration.trackApplicationLifecycleEvents) {
-        SEL selector = @selector(_applicationDidFinishLaunchingWithOptions:);
-        if ([SEGAnalytics.sharedAnalytics respondsToSelector:selector]) {
-            [SEGAnalytics.sharedAnalytics performSelector:selector
-                                               withObject:_bridge.launchOptions];
+    @try {
+        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
+        [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:_bridge.launchOptions];
+        [configuration use:[SEGAppboyIntegrationFactory instance]];
+        [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
+        configuration.enableAdvertisingTracking = YES;       //OPTIONAL
+        configuration.flushAt = flushAt;
+        configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
+        configuration.trackApplicationLifecycleEvents = YES; //OPTIONAL
+        configuration.trackDeepLinks = YES;                  //OPTIONAL
+        configuration.trackPushNotifications = YES;          //OPTIONAL
+        configuration.trackAttributionData = YES;            //OPTIONAL
+        configuration.shouldUseLocationServices = shouldUseLocationServices;
+        #if DEBUG
+        [SEGAnalytics debug:YES];
+        #else
+        [SEGAnalytics debug:NO];
+        #endif
+        [SEGAnalytics setupWithConfiguration:configuration];
+        // On iOS we use method swizzling to intercept lifecycle events
+        // However, React-Native calls our library after applicationDidFinishLaunchingWithOptions: is called
+        // We fix this by manually calling this method at setup-time
+        if (configuration.trackApplicationLifecycleEvents) {
+            SEL selector = @selector(_applicationDidFinishLaunchingWithOptions:);
+            if ([SEGAnalytics.sharedAnalytics respondsToSelector:selector]) {
+                [SEGAnalytics.sharedAnalytics performSelector:selector
+                                                withObject:_bridge.launchOptions];
+            }
         }
     }
-
-    [AppsFlyerTracker sharedTracker].delegate = self;
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+    }
+    @finally {
+        NSLog(@"finally");
+    }
 }
 
 /*
