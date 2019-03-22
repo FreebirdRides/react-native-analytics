@@ -14,6 +14,7 @@
 
 
 - (instancetype)initWithSettings:(NSDictionary *)settings withAnalytics:(SEGAnalytics *)analytics {
+
     if (self = [super init]) {
         self.settings = settings;
         NSString *afDevKey = [self.settings objectForKey:@"appsFlyerDevKey"];
@@ -22,8 +23,11 @@
         self.appsflyer = [AppsFlyerTracker sharedTracker];
         [self.appsflyer setAppsFlyerDevKey:afDevKey];
         [self.appsflyer setAppleAppID:appleAppId];
+        NSLog(@"SEGAppsFlyerIntegration appsFlyerDevKey %@", afDevKey);
+        NSLog(@"SEGAppsFlyerIntegration appleAppId %@", appleAppId);
         self.analytics = analytics;
         if ([self trackAttributionData]) {
+            NSLog(@"SEGAppsFlyerIntegration set delegate");
             self.appsflyer.delegate = self;
         }
         //self.appsflyer.isDebug = YES;
@@ -41,7 +45,6 @@
 }
 
 - (instancetype)initWithSettings:(NSDictionary *)settings withAppsflyer:(AppsFlyerTracker *)aAppsflyer {
-    
     if (self = [super init]) {
         self.settings = settings;
         self.appsflyer = aAppsflyer;
@@ -167,6 +170,8 @@
 
 -(void)onConversionDataReceived:(NSDictionary *)installData
 {
+    NSLog(@"SEGAppsFlyer onConversionDataReceived");
+
     NSString *const key = @"AF_Install_Attr_Sent";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL installAttrSent = [userDefaults boolForKey:key];
@@ -205,6 +210,7 @@
 
 -(void)onConversionDataRequestFailure:(NSError *) error
 {
+    NSLog(@"SEGAppsFlyer onConversionDataRequestFailure");
     if(_segDelegate && [_segDelegate respondsToSelector:@selector(onConversionDataRequestFailure:)]) {
         [_segDelegate onConversionDataRequestFailure:error];
     }
@@ -213,6 +219,7 @@
 
 - (void) onAppOpenAttribution:(NSDictionary*) attributionData
 {
+    NSLog(@"SEGAppsFlyer onAppOpenAttribution");
     if(_segDelegate && [_segDelegate respondsToSelector:@selector(onAppOpenAttribution:)]) {
         [_segDelegate onAppOpenAttribution:attributionData];
     }
@@ -221,6 +228,7 @@
 
 - (void) onAppOpenAttributionFailure:(NSError *)error
 {
+    NSLog(@"SEGAppsFlyer onAppOpenAttributionFailure");
     if(_segDelegate && [_segDelegate respondsToSelector:@selector(onAppOpenAttributionFailure:)]) {
         [_segDelegate onAppOpenAttributionFailure:error];
     }

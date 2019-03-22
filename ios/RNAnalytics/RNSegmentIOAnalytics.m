@@ -26,14 +26,19 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
         SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
         [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:_bridge.launchOptions];
         [configuration use:[SEGAppboyIntegrationFactory instance]];
-        [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
-        configuration.enableAdvertisingTracking = YES;       //OPTIONAL
+        // [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
+        SEGAppsFlyerIntegrationFactory *af = [SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self];
+        af.delegate = self;
+        [af createWithSettings:@{@"appleAppID":@"1056234061", @"appsFlyerDevKey":@"MphPZ5AmhU8KMF6uZhyyQi", @"trackAttributionData": @"true"}
+                  forAnalytics: SEGAnalytics.sharedAnalytics];
+        [configuration use:af];
+        configuration.enableAdvertisingTracking = YES;       // OPTIONAL
         configuration.flushAt = flushAt;
         configuration.recordScreenViews = NO; // Enable this to record screen views automatically!
-        configuration.trackApplicationLifecycleEvents = YES; //OPTIONAL
-        configuration.trackDeepLinks = YES;                  //OPTIONAL
-        configuration.trackPushNotifications = YES;          //OPTIONAL
-        configuration.trackAttributionData = YES;            //OPTIONAL
+        configuration.trackApplicationLifecycleEvents = YES; // OPTIONAL
+        configuration.trackDeepLinks = YES;                  // OPTIONAL
+        configuration.trackPushNotifications = YES;          // OPTIONAL
+        configuration.trackAttributionData = YES;            // OPTIONAL
         configuration.shouldUseLocationServices = shouldUseLocationServices;
         #if DEBUG
         [SEGAnalytics debug:YES];
@@ -45,8 +50,10 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
         // However, React-Native calls our library after applicationDidFinishLaunchingWithOptions: is called
         // We fix this by manually calling this method at setup-time
         if (configuration.trackApplicationLifecycleEvents) {
+            NSLog(@"SEGAnalytics swizzling");
             SEL selector = @selector(_applicationDidFinishLaunchingWithOptions:);
             if ([SEGAnalytics.sharedAnalytics respondsToSelector:selector]) {
+                NSLog(@"SEGAnalytics swizzle");
                 [SEGAnalytics.sharedAnalytics performSelector:selector
                                                 withObject:_bridge.launchOptions];
             }
@@ -184,8 +191,9 @@ RCT_REMAP_METHOD(appsFlyerId,
 
 -(void) handleCallback:(NSDictionary *) message {
     NSError *error;
-    
-    if ([NSJSONSerialization isValidJSONObject:message]) {
+    Boolean isValidJson = [NSJSONSerialization isValidJSONObject:message];
+    NSLog(@"handleCallback isValidJson %@", isValidJson);
+    if (isValidJson) {
         NSData *jsonMessage = [NSJSONSerialization dataWithJSONObject:message
                                                               options:0
                                                                 error:&error];
