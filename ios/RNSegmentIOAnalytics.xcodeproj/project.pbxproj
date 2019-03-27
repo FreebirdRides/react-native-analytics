@@ -151,6 +151,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -259,9 +260,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"../../../ios/Frameworks/Segment",
+					../../../ios/Frameworks/Segment,
 					"../../../ios/Frameworks/Appboy-3.8.1",
-					"../../../ios/Frameworks/AppsFlyer",
+					../../../ios/Frameworks/AppsFlyer,
 				);
 				HEADER_SEARCH_PATHS = "../../../ios/Frameworks/Appboy-3.8.1/Appboy_iOS_SDK.framework/Headers";
 				OTHER_LDFLAGS = (
@@ -277,9 +278,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"../../../ios/Frameworks/Segment",
+					../../../ios/Frameworks/Segment,
 					"../../../ios/Frameworks/Appboy-3.8.1",
-					"../../../ios/Frameworks/AppsFlyer",
+					../../../ios/Frameworks/AppsFlyer,
 				);
 				HEADER_SEARCH_PATHS = "../../../ios/Frameworks/Appboy-3.8.1/Appboy_iOS_SDK.framework/Headers";
 				OTHER_LDFLAGS = (
