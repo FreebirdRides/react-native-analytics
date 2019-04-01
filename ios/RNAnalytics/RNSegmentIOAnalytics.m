@@ -191,9 +191,8 @@ RCT_REMAP_METHOD(appsFlyerId,
 
 -(void) handleCallback:(NSDictionary *) message {
     NSError *error;
-    Boolean isValidJson = [NSJSONSerialization isValidJSONObject:message];
-    NSLog(@"handleCallback isValidJson %@", isValidJson);
-    if (isValidJson) {
+
+    if ([NSJSONSerialization isValidJSONObject:message]) {
         NSData *jsonMessage = [NSJSONSerialization dataWithJSONObject:message
                                                               options:0
                                                                 error:&error];
