@@ -14,25 +14,32 @@ import com.segment.analytics.Analytics.Builder;
 import com.segment.analytics.Properties;
 import com.segment.analytics.Traits;
 import com.segment.analytics.Options;
-import android.util.Log;
-import android.content.Context;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.AppsFlyerConversionListener;
-import java.lang.Exception;
-import java.util.Map;
 import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
 import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.lang.Exception;
+import java.util.Map;
 
 public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
+
+  static final String AF_SEGMENT_SHARED_PREF = "appsflyer-segment-data";
+  static final String ATTR_KEY = "AF_onInstall_Attr";
+  static final String CONV_KEY = "AF_onConversion_Data";
+
   private static Analytics mAnalytics = null;
   private Boolean mEnabled = true;
   private Boolean mDebug = false;
   private ReactApplicationContext reactContext;
+  private Application application;
 
   @Override
   public String getName() {
@@ -46,6 +53,19 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   public RNSegmentIOAnalyticsModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
+    this.application = (Application) reactContext.getApplicationContext();
+  }
+
+  private boolean getFlag(final String key) {
+    // Context context = getContext();
+    Context context = this.application;
+
+    if (context == null) {
+      return false;
+    }
+
+    SharedPreferences sharedPreferences = context.getSharedPreferences(AF_SEGMENT_SHARED_PREF, 0);
+    return sharedPreferences.getBoolean(key, false);
   }
 
   /*
@@ -54,8 +74,8 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void setup(String writeKey, Integer flushAt, Boolean shouldUseLocationServices) {
     if (mAnalytics == null) {
-      Context context = getReactApplicationContext().getApplicationContext();
-      Builder builder = new Analytics.Builder(context, writeKey);
+      // Context context = getReactApplicationContext().getApplicationContext();
+      Builder builder = new Analytics.Builder(this.application, writeKey);
       builder.flushQueueSize(flushAt);
 
       if (mDebug) {
@@ -65,11 +85,21 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
       AppsflyerIntegration.cld = new AppsflyerIntegration.ConversionListenerDisplay() {
         @Override
         public void display(Map<String, String> attributionData) {
+          AppsFlyerConversionListener listener = registerConversionListener();
           for (String attrName : attributionData.keySet()) {
             log("attribute: " + attrName + " = " + attributionData.get(attrName));
           }
+          if (getFlag(ATTR_KEY)) {
+            listener.onAppOpenAttribution(attributionData);
+          }
+          if (getFlag(CONV_KEY)) {
+            listener.onInstallConversionDataLoaded(attributionData);
+          }
         }
       };
+
+      // AppsFlyerLib instance = AppsFlyerLib.getInstance();
+      // instance.init("", registerConversionListener(), this.application.getApplicationContext());
 
       mAnalytics = builder
         .use(AppsflyerIntegration.FACTORY) // https://github.com/AppsFlyerSDK/AppsFlyer-Segment-Integration#android
@@ -79,7 +109,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
         .build();
       // Set the initialized instance as a globally accessible instance.
       Analytics.setSingletonInstance(mAnalytics);
-      registerConversionListener();
+      
     } else {
       log("Segment Analytics already initialized. Refusing to re-initialize.");
     }
@@ -112,7 +142,7 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
         JSONObject obj = new JSONObject();
 
         try {
-          obj.put("status", "succes");
+          obj.put("status", "success");
           obj.put("type", eventType);
           obj.put("data", new JSONObject(data));
           sendEvent(reactContext, "onInstallConversionData", obj.toString());
@@ -233,8 +263,8 @@ public class RNSegmentIOAnalyticsModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void appsFlyerId(Promise promise) {
     try {
-      Context context = getReactApplicationContext().getApplicationContext();
-      String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(context);
+      // Context context = this.application.getApplicationContext();
+      String appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(this.application);
       promise.resolve(appsFlyerId);
     } catch (Exception e) {
       promise.reject("Segment", e);
