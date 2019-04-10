@@ -261,7 +261,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					../../../ios/Frameworks/Segment,
-					"../../../ios/Frameworks/Appboy-3.8.1",
+					../../../ios/Frameworks/Appboy,
 					../../../ios/Frameworks/AppsFlyer,
 				);
 				HEADER_SEARCH_PATHS = ../../../ios/Frameworks/Appboy/Appboy_iOS_SDK.framework/Headers;
@@ -279,7 +279,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					../../../ios/Frameworks/Segment,
-					"../../../ios/Frameworks/Appboy-3.8.1",
+					../../../ios/Frameworks/Appboy,
 					../../../ios/Frameworks/AppsFlyer,
 				);
 				HEADER_SEARCH_PATHS = ../../../ios/Frameworks/Appboy/Appboy_iOS_SDK.framework/Headers;
