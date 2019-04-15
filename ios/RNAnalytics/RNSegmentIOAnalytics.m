@@ -26,12 +26,12 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey :(NSUInteger)flushAt :(BOOL)shouldU
         SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:configKey];
         [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:_bridge.launchOptions];
         [configuration use:[SEGAppboyIntegrationFactory instance]];
-        // [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
-        SEGAppsFlyerIntegrationFactory *af = [SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self];
-        af.delegate = self;
-        [af createWithSettings:@{@"appleAppID":@"1056234061", @"appsFlyerDevKey":@"MphPZ5AmhU8KMF6uZhyyQi", @"trackAttributionData": @"true"}
-                  forAnalytics: SEGAnalytics.sharedAnalytics];
-        [configuration use:af];
+        [configuration use:[SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self]];
+        // SEGAppsFlyerIntegrationFactory *af = [SEGAppsFlyerIntegrationFactory createWithLaunchDelegate:self];
+        // af.delegate = self;
+        // [af createWithSettings:@{@"appleAppID":@"1056234061", @"appsFlyerDevKey":@"MphPZ5AmhU8KMF6uZhyyQi", @"trackAttributionData": @"true"}
+        //           forAnalytics: SEGAnalytics.sharedAnalytics];
+        // [configuration use:af];
         configuration.enableAdvertisingTracking = YES;       // OPTIONAL
         configuration.flushAt = flushAt;
         configuration.recordScreenViews = NO; // Enable this to record screen views automatically!

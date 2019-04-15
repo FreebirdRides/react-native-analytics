@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C641E89C22650C5600CDFD17 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C641E89B22650C5600CDFD17 /* iAd.framework */; };
+		C641E89E22650C5D00CDFD17 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C641E89D22650C5D00CDFD17 /* AdSupport.framework */; };
 		C69324552177E05900C349A2 /* SEGAppsFlyerIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324412177E05900C349A2 /* SEGAppsFlyerIntegration.m */; };
 		C69324562177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324422177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.m */; };
 		C69324572177E05900C349A2 /* IDFADelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C69324472177E05900C349A2 /* IDFADelegate.m */; };
@@ -30,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNSegmentIOAnalytics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSegmentIOAnalytics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C641E89B22650C5600CDFD17 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		C641E89D22650C5D00CDFD17 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		C69324412177E05900C349A2 /* SEGAppsFlyerIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAppsFlyerIntegration.m; sourceTree = "<group>"; };
 		C69324422177E05900C349A2 /* SEGAppsFlyerIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAppsFlyerIntegrationFactory.m; sourceTree = "<group>"; };
 		C69324432177E05900C349A2 /* SegmentAppsFlyeriOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentAppsFlyeriOS.h; sourceTree = "<group>"; };
@@ -52,6 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C641E89E22650C5D00CDFD17 /* AdSupport.framework in Frameworks */,
+				C641E89C22650C5600CDFD17 /* iAd.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +77,17 @@
 			children = (
 				EA880B8F1D04119B00FA807F /* RNAnalytics */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				C641E89A22650C5600CDFD17 /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		C641E89A22650C5600CDFD17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C641E89D22650C5D00CDFD17 /* AdSupport.framework */,
+				C641E89B22650C5600CDFD17 /* iAd.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		C69324402177E05900C349A2 /* AppsFlyer */ = {
@@ -261,10 +277,10 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					../../../ios/Frameworks/Segment,
-					../../../ios/Frameworks/Appboy,
+					"../../../ios/Frameworks/Appboy-3.8.1",
 					../../../ios/Frameworks/AppsFlyer,
 				);
-				HEADER_SEARCH_PATHS = ../../../ios/Frameworks/Appboy/Appboy_iOS_SDK.framework/Headers;
+				HEADER_SEARCH_PATHS = "../../../ios/Frameworks/Appboy-3.8.1/Appboy_iOS_SDK.framework/Headers";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -279,10 +295,10 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					../../../ios/Frameworks/Segment,
-					../../../ios/Frameworks/Appboy,
+					"../../../ios/Frameworks/Appboy-3.8.1",
 					../../../ios/Frameworks/AppsFlyer,
 				);
-				HEADER_SEARCH_PATHS = ../../../ios/Frameworks/Appboy/Appboy_iOS_SDK.framework/Headers;
+				HEADER_SEARCH_PATHS = "../../../ios/Frameworks/Appboy-3.8.1/Appboy_iOS_SDK.framework/Headers";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
